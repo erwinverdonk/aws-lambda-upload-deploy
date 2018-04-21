@@ -1,7 +1,7 @@
 {
-  "name": "aws-lambda-deploy",
+  "name": "aws-lambda-upload-deploy",
   "version": "1.0.0",
-  "description": "Easier way to deploy Lambda functions in Node.js",
+  "description": "Easier way to upload and deploy Lambda functions in Node.js",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p ./tsconfig.json"

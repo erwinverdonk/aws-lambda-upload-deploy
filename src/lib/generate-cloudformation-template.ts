@@ -1,9 +1,9 @@
 import * as AWS from 'aws-sdk';
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
-import { DeployOptions } from './../';
+import { UploadDeployOptions } from './../';
 
-export const generateCloudFormationTemplate = (options: DeployOptions) => {
+export const generateCloudFormationTemplate = (options: UploadDeployOptions) => {
   const template = fs
   // TODO
     .readFileSync(`${__dirname}/../../src/lambda.template.yaml`, 'utf8')

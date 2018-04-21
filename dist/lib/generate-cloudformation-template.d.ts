@@ -1,2 +1,2 @@
-import { DeployOptions } from './../';
-export declare const generateCloudFormationTemplate: (options: DeployOptions) => string;
+import { UploadDeployOptions } from './../';
+export declare const generateCloudFormationTemplate: (options: UploadDeployOptions) => string;

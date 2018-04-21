@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-export declare type DeployOptions = {
+export declare type UploadDeployOptions = {
     functionName: AWS.Lambda.FunctionName;
     sourcePath: string;
     version: string;
@@ -20,6 +20,6 @@ export declare type DeployOptions = {
         exportForCloudFormation?: boolean;
     };
 };
-export declare const AwsLambdaDeploy: ($options: DeployOptions) => {
+export declare const AwsLambdaUploadDeploy: ($options: UploadDeployOptions) => {
     start: () => void;
 };

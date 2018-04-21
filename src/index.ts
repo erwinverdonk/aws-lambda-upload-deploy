@@ -8,7 +8,7 @@ import { AwsCloudFormationDeploy } from 'aws-cloudformation-deploy';
 
 import { createZip, upload, generateCloudFormationTemplate } from './lib';
 
-export type DeployOptions = {
+export type UploadDeployOptions = {
   functionName: AWS.Lambda.FunctionName,
   sourcePath: string,
   version: string,
@@ -68,7 +68,7 @@ const oraPromise = (message:string, promise:Promise<any>) => {
     });
 }
 
-export const AwsLambdaDeploy = ($options: DeployOptions) => {
+export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
   const options:typeof $options = deepmerge(
     getDefaultOptions($options.functionName), 
     $options,

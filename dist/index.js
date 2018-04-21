@@ -49,7 +49,7 @@ const oraPromise = (message, promise) => {
         throw _;
     });
 };
-exports.AwsLambdaDeploy = ($options) => {
+exports.AwsLambdaUploadDeploy = ($options) => {
     const options = deepmerge(getDefaultOptions($options.functionName), $options, { arrayMerge: (dest, src, opt) => src });
     options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
     const start = () => {
