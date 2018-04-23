@@ -1,6 +1,6 @@
 {
   "name": "@erwinverdonk/aws-lambda-upload-deploy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Easier way to upload and deploy Lambda functions in Node.js",
   "main": "./dist/index.js",
   "scripts": {
@@ -14,12 +14,12 @@
     "@types/deepmerge": "^2.1.0",
     "@types/node": "^9.6.5",
     "@types/ora": "^1.3.4",
-    "typescript": "^2.8.1"
+    "typescript": "^2.8.1",
+    "aws-sdk": "^2.215.1"
   },
   "dependencies": {
     "@erwinverdonk/aws-cloudformation-deploy": "^1.0.6",
     "archiver": "^2.1.1",
-    "aws-sdk": "^2.215.1",
     "chalk": "^2.4.0",
     "deepmerge": "^2.1.0",
     "js-yaml": "^3.11.0",
