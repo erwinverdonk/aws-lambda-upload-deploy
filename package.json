@@ -17,8 +17,8 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
+    "@erwinverdonk/aws-cloudformation-deploy": "^1.0.5",
     "archiver": "^2.1.1",
-    "@erwinverdonk/aws-cloudformation-deploy": "^1.0.4",
     "aws-sdk": "^2.215.1",
     "chalk": "^2.4.0",
     "deepmerge": "^2.1.0",
