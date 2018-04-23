@@ -13,7 +13,7 @@ const os = require("os");
 const fs = require("fs");
 const deepmerge = require("deepmerge");
 const chalk_1 = require("chalk");
-const aws_cloudformation_deploy_1 = require("aws-cloudformation-deploy");
+const aws_cloudformation_deploy_1 = require("@erwinverdonk/aws-cloudformation-deploy");
 const lib_1 = require("./lib");
 const getDefaultOptions = (functionName) => ({
     s3: {

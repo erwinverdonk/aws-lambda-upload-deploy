@@ -4,7 +4,7 @@ import * as os from 'os';
 import * as fs from 'fs';
 import * as deepmerge from 'deepmerge'
 import chalk from 'chalk';
-import { AwsCloudFormationDeploy } from 'aws-cloudformation-deploy';
+import { AwsCloudFormationDeploy } from '@erwinverdonk/aws-cloudformation-deploy';
 
 import { createZip, upload, generateCloudFormationTemplate } from './lib';
 
