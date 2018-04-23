@@ -29,7 +29,7 @@ Resources:
   LambdaExecRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: '@{FunctionName}_LambdaExecRole'
+      RoleName: !Sub '@{FunctionName}_LambdaExecRole_${AWS::Region}'
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement: @{RoleStatement}
