@@ -28,7 +28,7 @@ export const generateCloudFormationTemplate = (options: UploadDeployOptions) => 
           'logs:CreateLogStream',
           'logs:PutLogEvents'
         ],
-        resource: [`arn:aws:logs:*:*:log-group:/aws/lambda/${options.functionName}:*`]
+        resource: ['*']
       }]).map((_:any) => Object.keys(_)
         .reduce((acc, key) => {
           acc[key.replace(/^\w/, _ => _.toUpperCase())] = _[key]
