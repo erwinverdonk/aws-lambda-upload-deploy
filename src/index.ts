@@ -83,7 +83,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
       'Creating Lambda package...',
       createZip({
         input: options.sourcePath,
-        output: `${os.tmpdir()}/${options.functionName}-${options.version}.zip`
+        output: `${os.tmpdir()}/${options.functionName}.zip`
       })
     ) as ReturnType<typeof createZip>)
     // Upload Lambda package

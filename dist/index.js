@@ -55,7 +55,7 @@ exports.AwsLambdaUploadDeploy = ($options) => {
     const start = () => {
         oraPromise('Creating Lambda package...', lib_1.createZip({
             input: options.sourcePath,
-            output: `${os.tmpdir()}/${options.functionName}-${options.version}.zip`
+            output: `${os.tmpdir()}/${options.functionName}.zip`
         }))
             .then((pkg) => __awaiter(this, void 0, void 0, function* () {
             yield oraPromise('Uploading Lambda package...', lib_1.upload({ source: pkg.output, bucketName: options.s3.bucketName }));
