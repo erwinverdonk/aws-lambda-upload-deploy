@@ -21,7 +21,15 @@ export const generateCloudFormationTemplate = (options: UploadDeployOptions) => 
       Action: ['sts:AssumeRole']
      }]))
     .replace(/@{PolicyStatement}/g, JSON.stringify(
-      options.settings.permissions.map((_:any) => Object.keys(_)
+      options.settings.permissions.concat([{
+        effect: 'Allow',
+        action: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents'
+        ],
+        resource: [`arn:aws:logs:*:*:log-group:/aws/lambda/${options.functionName}:*`]
+      }]).map((_:any) => Object.keys(_)
         .reduce((acc, key) => {
           acc[key.replace(/^\w/, _ => _.toUpperCase())] = _[key]
           return acc;
