@@ -1,6 +1,6 @@
 {
   "name": "@erwinverdonk/aws-lambda-upload-deploy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Easier way to upload and deploy Lambda functions in Node.js",
   "main": "./dist/index.js",
   "scripts": {

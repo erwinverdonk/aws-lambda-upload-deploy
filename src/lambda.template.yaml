@@ -49,4 +49,4 @@ Outputs:
   LambdaArn:
     Value: !Ref LambdaAlias
     Export:
-      Name: '@{FunctionName}-@{Version}'
+      Name: '@{FunctionName}'
