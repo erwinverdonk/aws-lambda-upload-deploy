@@ -5,7 +5,7 @@ exports.generateCloudFormationTemplate = (options) => {
     const template = fs
         .readFileSync(`${__dirname}/../../src/lambda.template.yaml`, 'utf8')
         .replace(/@{S3Bucket}/g, options.s3.bucketName)
-        .replace(/@{S3Key}/g, `${options.s3.bucketPath}${options.functionName}-${options.version}.zip`)
+        .replace(/@{S3Key}/g, `${options.s3.bucketPath}${options.functionName}.zip`)
         .replace(/@{FunctionName}/g, options.functionName)
         .replace(/@{Runtime}/g, options.settings.runtime)
         .replace(/@{Timeout}/g, options.settings.timeout.toString())
