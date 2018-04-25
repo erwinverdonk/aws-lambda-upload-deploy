@@ -34,7 +34,7 @@ Resources:
         Version: '2012-10-17'
         Statement: @{RoleStatement}
       Policies:
-        - PolicyName: '@{FunctionName}_${AWS::Region}'
+        - PolicyName: !Sub '@{FunctionName}_${AWS::Region}'
           PolicyDocument:
             Version: '2012-10-17'
             Statement: @{PolicyStatement}
