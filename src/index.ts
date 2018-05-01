@@ -113,18 +113,21 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
         functionName: options.functionName
       });
       const outputs = [] as AWS.CloudFormation.Outputs;
-      let lambdaCreationResult;
 
-      if(!lambdaExists){
-        lambdaCreationResult = await AwsCloudFormationDeploy({
-          stackName: `Lambda-${options.functionName}`,
-          templateBody: generateCloudFormationTemplate(options, lambdaExists)
-        }).start();
+      // Deploy the base Lambda
+      const lambdaBaseResult = await AwsCloudFormationDeploy({
+        stackName: `Lambda-${options.functionName}`,
+        templateBody: generateCloudFormationTemplate(options, false)
+      }).start();
 
-        outputs.splice.apply(outputs, [0, 0].concat(
-          lambdaCreationResult.outputs as any
-        ))
-      } else {
+      // Store the outputs of the Lambda base for later return.
+      outputs.splice.apply(outputs, [0, 0].concat(
+        lambdaBaseResult.outputs as any
+      ))
+      
+      // When the Lambda does already exist we update the code
+      // TODO: Add hash to ZIP filename so we can check whether code has actually changed
+      if(lambdaExists){
         await updateCode({
           functionName: options.functionName,
           s3BucketName: options.s3.bucketName,
@@ -132,7 +135,9 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
         })
       }
 
-      if(!lambdaCreationResult || lambdaCreationResult.succeed){
+      // When Lambda base already existed or is deployed successfully we can 
+      // continue deploy the version.
+      if(lambdaExists || lambdaBaseResult.succeed){
         outputs.splice.apply(outputs, [0, 0].concat(
           (await AwsCloudFormationDeploy({
             stackName: `Lambda-${options.functionName}-${options.version}`,

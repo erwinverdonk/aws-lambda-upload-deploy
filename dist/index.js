@@ -75,22 +75,19 @@ exports.AwsLambdaUploadDeploy = ($options) => {
                 functionName: options.functionName
             });
             const outputs = [];
-            let lambdaCreationResult;
-            if (!lambdaExists) {
-                lambdaCreationResult = yield aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
-                    stackName: `Lambda-${options.functionName}`,
-                    templateBody: lib_1.generateCloudFormationTemplate(options, lambdaExists)
-                }).start();
-                outputs.splice.apply(outputs, [0, 0].concat(lambdaCreationResult.outputs));
-            }
-            else {
+            const lambdaBaseResult = yield aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
+                stackName: `Lambda-${options.functionName}`,
+                templateBody: lib_1.generateCloudFormationTemplate(options, false)
+            }).start();
+            outputs.splice.apply(outputs, [0, 0].concat(lambdaBaseResult.outputs));
+            if (lambdaExists) {
                 yield lib_1.updateCode({
                     functionName: options.functionName,
                     s3BucketName: options.s3.bucketName,
                     s3Key: `${options.s3.bucketPath}${uploadResult.fileKey}`
                 });
             }
-            if (!lambdaCreationResult || lambdaCreationResult.succeed) {
+            if (lambdaExists || lambdaBaseResult.succeed) {
                 outputs.splice.apply(outputs, [0, 0].concat((yield aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
                     stackName: `Lambda-${options.functionName}-${options.version}`,
                     templateBody: lib_1.generateCloudFormationTemplate(options, yield lib_1.checkLambdaExists({

@@ -27,6 +27,12 @@ Resources:
             Version: '2012-10-17'
             Statement: @{PolicyStatement}
 
+  LambdaLogsGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: '/aws/lambda/@{FunctionName}'
+      RetentionInDays: 30
+      
 Outputs:
   LambdaArn:
     Value: !GetAtt Lambda.Arn
