@@ -1,2 +1,2 @@
 import { UploadDeployOptions } from './../';
-export declare const generateCloudFormationTemplate: (options: UploadDeployOptions) => string;
+export declare const generateCloudFormationTemplate: (options: UploadDeployOptions, lambdaExists: boolean) => string;

@@ -1,0 +1,27 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  LambdaVersion: 
+    Type: 'AWS::Lambda::Version'
+    Properties: 
+      FunctionName: !ImportValue @{FunctionName}
+
+  LambdaAlias: 
+    Type: 'AWS::Lambda::Alias'
+    Properties:
+      FunctionName: !ImportValue @{FunctionName}
+      FunctionVersion: !GetAtt LambdaVersion.Version
+      Name: @{Version}
+
+  LambdaLogsGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: '/aws/lambda/@{FunctionName}-@{Version}'
+      RetentionInDays: 30
+
+Outputs:
+  LambdaArn:
+    Value: !Ref LambdaAlias
+    Export:
+      Name: '@{FunctionName}-@{Version}'

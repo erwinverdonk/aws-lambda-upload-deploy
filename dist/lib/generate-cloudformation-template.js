@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
-exports.generateCloudFormationTemplate = (options) => {
-    const template = fs
-        .readFileSync(`${__dirname}/../../src/lambda.template.yaml`, 'utf8')
+exports.generateCloudFormationTemplate = (options, lambdaExists) => {
+    const template = fs.readFileSync(`${__dirname}/../../src/lambda${lambdaExists ? '.version' : ''}.template.yaml`, 'utf8');
+    return template
         .replace(/@{S3Bucket}/g, options.s3.bucketName)
-        .replace(/@{S3Key}/g, `${options.s3.bucketPath}${options.functionName}.zip`)
+        .replace(/@{S3Key}/g, options.s3.key)
         .replace(/@{FunctionName}/g, options.functionName)
         .replace(/@{Runtime}/g, options.settings.runtime)
         .replace(/@{Timeout}/g, options.settings.timeout.toString())
@@ -30,5 +30,4 @@ exports.generateCloudFormationTemplate = (options) => {
         acc[key.replace(/^\w/, _ => _.toUpperCase())] = _[key];
         return acc;
     }, {}))));
-    return template;
 };

@@ -53,22 +53,57 @@ exports.AwsLambdaUploadDeploy = ($options) => {
     const options = deepmerge(getDefaultOptions($options.functionName), $options, { arrayMerge: (dest, src, opt) => src });
     options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
     const start = () => {
-        oraPromise('Creating Lambda package...', lib_1.createZip({
+        const zipFileName = `${options.functionName}-${options.version}-${new Date().getTime()}.zip`;
+        options.s3.key = `${options.s3.bucketPath}${zipFileName}`;
+        return oraPromise('Creating Lambda package...', lib_1.createZip({
             input: options.sourcePath,
-            output: `${os.tmpdir()}/${options.functionName}.zip`
+            output: `${os.tmpdir()}/${zipFileName}`
         }))
             .then((pkg) => __awaiter(this, void 0, void 0, function* () {
-            yield oraPromise('Uploading Lambda package...', lib_1.upload({ source: pkg.output, bucketName: options.s3.bucketName }));
-            return pkg;
+            const uploadResult = yield oraPromise('Uploading Lambda package...', lib_1.upload({ source: pkg.output, bucketName: options.s3.bucketName }));
+            return {
+                pkg,
+                uploadResult
+            };
         }))
-            .then(pkg => fs.unlinkSync(pkg.output))
-            .then(() => aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
-            stackName: `Lambda-${options.functionName}`,
-            templateBody: lib_1.generateCloudFormationTemplate(options)
-        }).start())
-            .then(() => ({
+            .then(_ => {
+            fs.unlinkSync(_.pkg.output);
+            return _;
+        })
+            .then(({ pkg, uploadResult }) => __awaiter(this, void 0, void 0, function* () {
+            const lambdaExists = yield lib_1.checkLambdaExists({
+                functionName: options.functionName
+            });
+            const outputs = [];
+            let lambdaCreationResult;
+            if (!lambdaExists) {
+                lambdaCreationResult = yield aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
+                    stackName: `Lambda-${options.functionName}`,
+                    templateBody: lib_1.generateCloudFormationTemplate(options, lambdaExists)
+                }).start();
+                outputs.splice.apply(outputs, [0, 0].concat(lambdaCreationResult.outputs));
+            }
+            else {
+                yield lib_1.updateCode({
+                    functionName: options.functionName,
+                    s3BucketName: options.s3.bucketName,
+                    s3Key: `${options.s3.bucketPath}${uploadResult.fileKey}`
+                });
+            }
+            if (!lambdaCreationResult || lambdaCreationResult.succeed) {
+                outputs.splice.apply(outputs, [0, 0].concat((yield aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
+                    stackName: `Lambda-${options.functionName}-${options.version}`,
+                    templateBody: lib_1.generateCloudFormationTemplate(options, yield lib_1.checkLambdaExists({
+                        functionName: options.functionName
+                    }))
+                }).start()).outputs));
+            }
+            return { outputs };
+        }))
+            .then(_ => ({
             functionName: options.functionName,
-            bucketName: options.s3.bucketName
+            bucketName: options.s3.bucketName,
+            cloudformation: _
         }))
             .catch(_ => {
             console.error(chalk_1.default.red(_));

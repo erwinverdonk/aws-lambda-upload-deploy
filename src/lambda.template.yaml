@@ -3,29 +3,17 @@ AWSTemplateFormatVersion: '2010-09-09'
 
 Resources:
   Lambda:
-      Type: 'AWS::Lambda::Function'
-      Properties:
-        Code:
-          S3Bucket: @{S3Bucket}
-          S3Key: @{S3Key}
-        FunctionName: @{FunctionName}
-        Handler: 'index.handler'
-        Role: !GetAtt LambdaExecRole.Arn
-        Runtime: @{Runtime}
-        Timeout: @{Timeout}
-
-  LambdaVersion: 
-    Type: 'AWS::Lambda::Version'
-    Properties: 
-      FunctionName: !Ref Lambda
-
-  LambdaAlias: 
-    Type: 'AWS::Lambda::Alias'
+    Type: 'AWS::Lambda::Function'
     Properties:
-      FunctionName: !Ref Lambda
-      FunctionVersion: !GetAtt LambdaVersion.Version
-      Name: @{Version}
-
+      Code:
+        S3Bucket: @{S3Bucket}
+        S3Key: @{S3Key}
+      FunctionName: @{FunctionName}
+      Handler: 'index.handler'
+      Role: !GetAtt LambdaExecRole.Arn
+      Runtime: @{Runtime}
+      Timeout: @{Timeout}
+  
   LambdaExecRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -39,14 +27,8 @@ Resources:
             Version: '2012-10-17'
             Statement: @{PolicyStatement}
 
-  LambdaLogsGroup:
-    Type: 'AWS::Logs::LogGroup'
-    Properties:
-      LogGroupName: '/aws/lambda/@{FunctionName}'
-      RetentionInDays: 30
-
 Outputs:
   LambdaArn:
-    Value: !Ref LambdaAlias
+    Value: !GetAtt Lambda.Arn
     Export:
       Name: '@{FunctionName}'

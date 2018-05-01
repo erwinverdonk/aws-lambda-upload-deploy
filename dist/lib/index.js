@@ -6,3 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./create-zip"));
 __export(require("./upload"));
 __export(require("./generate-cloudformation-template"));
+__export(require("./check-lambda-exists"));
+__export(require("./update-code"));

@@ -5,7 +5,8 @@ export declare type UploadDeployOptions = {
     version: string;
     s3: {
         bucketName: AWS.S3.BucketName;
-        bucketPath?: AWS.S3.ObjectKey;
+        bucketPath?: string;
+        key?: AWS.S3.ObjectKey;
     };
     settings?: {
         runtime?: AWS.Lambda.Runtime;
@@ -21,5 +22,11 @@ export declare type UploadDeployOptions = {
     };
 };
 export declare const AwsLambdaUploadDeploy: ($options: UploadDeployOptions) => {
-    start: () => void;
+    start: () => Promise<void | {
+        functionName: string;
+        bucketName: string;
+        cloudformation: {
+            outputs: AWS.CloudFormation.Output[];
+        };
+    }>;
 };

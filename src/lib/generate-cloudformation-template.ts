@@ -3,12 +3,17 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import { UploadDeployOptions } from './../';
 
-export const generateCloudFormationTemplate = (options: UploadDeployOptions) => {
-  const template = fs
-  // TODO
-    .readFileSync(`${__dirname}/../../src/lambda.template.yaml`, 'utf8')
+export const generateCloudFormationTemplate = (options: UploadDeployOptions, lambdaExists: boolean) => {
+  const template = fs.readFileSync(
+    `${__dirname}/../../src/lambda${
+      lambdaExists ? '.version' : ''
+    }.template.yaml`,
+    'utf8'
+  );
+
+  return template
     .replace(/@{S3Bucket}/g, options.s3.bucketName)
-    .replace(/@{S3Key}/g, `${options.s3.bucketPath}${options.functionName}.zip`)
+    .replace(/@{S3Key}/g, options.s3.key)
     .replace(/@{FunctionName}/g, options.functionName)
     .replace(/@{Runtime}/g, options.settings.runtime)
     .replace(/@{Timeout}/g, options.settings.timeout.toString())
@@ -19,7 +24,7 @@ export const generateCloudFormationTemplate = (options: UploadDeployOptions) => 
         Service: options.settings.servicesAllowed
       },
       Action: ['sts:AssumeRole']
-     }]))
+    }]))
     .replace(/@{PolicyStatement}/g, JSON.stringify(
       options.settings.permissions.concat([{
         effect: 'Allow',
@@ -35,7 +40,5 @@ export const generateCloudFormationTemplate = (options: UploadDeployOptions) => 
           return acc;
         }, {} as any)
       )
-    ));
-
-  return template;
+    ))
 };
