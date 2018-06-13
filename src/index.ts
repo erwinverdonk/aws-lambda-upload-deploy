@@ -21,6 +21,7 @@ export type UploadDeployOptions = {
     runtime?: AWS.Lambda.Runtime,
     memory?: AWS.Lambda.MemorySize,
     timeout?: AWS.Lambda.Timeout,
+    environment?: AWS.Lambda.EnvironmentVariables,
     servicesAllowed?: string[],
     permissions?: {
       effect: 'Allow' | 'Deny',
@@ -39,6 +40,7 @@ const getDefaultOptions = (functionName:string) => ({
     runtime: 'nodejs8.10',
     memory: 128,
     timeout: 3,
+    environment: {},
     servicesAllowed: [
       'lambda.amazonaws.com'
     ],

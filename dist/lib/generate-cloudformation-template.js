@@ -9,6 +9,7 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
         .replace(/@{FunctionName}/g, options.functionName)
         .replace(/@{Runtime}/g, options.settings.runtime)
         .replace(/@{Timeout}/g, options.settings.timeout.toString())
+        .replace(/@{Environment}/g, JSON.stringify(options.settings.environment))
         .replace(/@{Version}/g, options.version)
         .replace(/@{RoleStatement}/g, JSON.stringify([{
             Effect: 'Allow',

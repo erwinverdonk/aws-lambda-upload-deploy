@@ -23,6 +23,7 @@ const getDefaultOptions = (functionName) => ({
         runtime: 'nodejs8.10',
         memory: 128,
         timeout: 3,
+        environment: {},
         servicesAllowed: [
             'lambda.amazonaws.com'
         ],

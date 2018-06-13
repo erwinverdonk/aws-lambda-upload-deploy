@@ -13,6 +13,8 @@ Resources:
       Role: !GetAtt LambdaExecRole.Arn
       Runtime: @{Runtime}
       Timeout: @{Timeout}
+      Environment: 
+        Variables: @{Environment}
   
   LambdaExecRole:
     Type: 'AWS::IAM::Role'

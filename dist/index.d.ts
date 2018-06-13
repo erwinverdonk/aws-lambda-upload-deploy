@@ -12,6 +12,7 @@ export declare type UploadDeployOptions = {
         runtime?: AWS.Lambda.Runtime;
         memory?: AWS.Lambda.MemorySize;
         timeout?: AWS.Lambda.Timeout;
+        environment?: AWS.Lambda.EnvironmentVariables;
         servicesAllowed?: string[];
         permissions?: {
             effect: 'Allow' | 'Deny';
