@@ -29,6 +29,15 @@ export const generateCloudFormationTemplate = (options: UploadDeployOptions, lam
       options.settings.permissions.concat([{
         effect: 'Allow',
         action: [
+          'lambda:InvokeFunction'
+        ],
+        resource: [
+          `arn:aws:lambda:*:*:function:${options.functionName}`,
+          `arn:aws:lambda:*:*:function:${options.functionName}:*`
+        ]
+      },{
+        effect: 'Allow',
+        action: [
           'logs:CreateLogGroup',
           'logs:CreateLogStream',
           'logs:PutLogEvents'
