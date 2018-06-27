@@ -2,7 +2,7 @@ import * as AWS from 'aws-sdk';
 import * as ora from 'ora';
 import * as os from 'os';
 import * as fs from 'fs';
-import * as deepmerge from 'deepmerge'
+import * as deepmerge from 'deepmerge';
 import chalk from 'chalk';
 import { AwsCloudFormationDeploy } from '@erwinverdonk/aws-cloudformation-deploy';
 
@@ -10,6 +10,7 @@ import { createZip, upload, generateCloudFormationTemplate, checkLambdaExists, u
 
 export type UploadDeployOptions = {
   functionName: AWS.Lambda.FunctionName,
+  handlerName: string,
   sourcePath: string,
   version: string,
   s3: {
@@ -23,11 +24,16 @@ export type UploadDeployOptions = {
     timeout?: AWS.Lambda.Timeout,
     environment?: AWS.Lambda.EnvironmentVariables,
     servicesAllowed?: string[],
+    managedPolicies?: string[],
     permissions?: {
       effect: 'Allow' | 'Deny',
       action: string[],
       resource: string[]
     }[],
+    vpcConfig?: {
+      subnetIds?: AWS.Lambda.SubnetIds;
+      securityGroupIds?: AWS.Lambda.SecurityGroupIds;
+    },
     exportForCloudFormation?: boolean
   }
 }
@@ -36,6 +42,7 @@ const getDefaultOptions = (functionName:string) => ({
   s3: {
     bucketPath: ''
   },
+  handlerName: 'handler',
   settings: {
     runtime: 'nodejs8.10',
     memory: 128,

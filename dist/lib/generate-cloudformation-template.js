@@ -7,8 +7,16 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
         .replace(/@{S3Bucket}/g, options.s3.bucketName)
         .replace(/@{S3Key}/g, options.s3.key)
         .replace(/@{FunctionName}/g, options.functionName)
+        .replace(/@{HandlerName}/g, options.handlerName)
         .replace(/@{Runtime}/g, options.settings.runtime)
         .replace(/@{Timeout}/g, options.settings.timeout.toString())
+        .replace(/@{VpcConfig}/g, options.settings.vpcConfig
+        ? JSON.stringify(Object.keys(options.settings.vpcConfig)
+            .reduce((acc, key) => {
+            acc[key.replace(/^\w/, _ => _.toUpperCase())] = (options.settings.vpcConfig[key]);
+            return acc;
+        }, {}))
+        : '!Ref AWS::NoValue')
         .replace(/@{Environment}/g, JSON.stringify(options.settings.environment))
         .replace(/@{Version}/g, options.version)
         .replace(/@{RoleStatement}/g, JSON.stringify([{
@@ -18,6 +26,9 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
             },
             Action: ['sts:AssumeRole']
         }]))
+        .replace(/@{ManagedPolicies}/g, options.settings.managedPolicies
+        ? `ManagedPolicyArns: ${JSON.stringify(options.settings.managedPolicies)}`
+        : '')
         .replace(/@{PolicyStatement}/g, JSON.stringify(options.settings.permissions.concat([{
             effect: 'Allow',
             action: [

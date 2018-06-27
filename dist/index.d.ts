@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 export declare type UploadDeployOptions = {
     functionName: AWS.Lambda.FunctionName;
+    handlerName: string;
     sourcePath: string;
     version: string;
     s3: {
@@ -14,11 +15,16 @@ export declare type UploadDeployOptions = {
         timeout?: AWS.Lambda.Timeout;
         environment?: AWS.Lambda.EnvironmentVariables;
         servicesAllowed?: string[];
+        managedPolicies?: string[];
         permissions?: {
             effect: 'Allow' | 'Deny';
             action: string[];
             resource: string[];
         }[];
+        vpcConfig?: {
+            subnetIds?: AWS.Lambda.SubnetIds;
+            securityGroupIds?: AWS.Lambda.SecurityGroupIds;
+        };
         exportForCloudFormation?: boolean;
     };
 };

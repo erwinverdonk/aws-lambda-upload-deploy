@@ -19,6 +19,7 @@ const getDefaultOptions = (functionName) => ({
     s3: {
         bucketPath: ''
     },
+    handlerName: 'handler',
     settings: {
         runtime: 'nodejs8.10',
         memory: 128,

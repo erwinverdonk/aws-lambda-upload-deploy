@@ -9,10 +9,11 @@ Resources:
         S3Bucket: @{S3Bucket}
         S3Key: @{S3Key}
       FunctionName: @{FunctionName}
-      Handler: 'index.handler'
+      Handler: 'index.@{HandlerName}'
       Role: !GetAtt LambdaExecRole.Arn
       Runtime: @{Runtime}
       Timeout: @{Timeout}
+      VpcConfig: @{VpcConfig}
       Environment: 
         Variables: @{Environment}
   
@@ -23,6 +24,7 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement: @{RoleStatement}
+      @{ManagedPolicies}
       Policies:
         - PolicyName: !Sub '@{FunctionName}_${AWS::Region}'
           PolicyDocument:
