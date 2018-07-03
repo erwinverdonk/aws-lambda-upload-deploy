@@ -17,7 +17,7 @@ export const createZip = ({ input, output }: ZipOptions): Promise<ZipResult> => 
   return new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(output);
     const archive = archiver('zip', {
-      zlib: { level: zlib.constants.Z_NO_COMPRESSION }
+      zlib: { level: zlib.constants.Z_BEST_COMPRESSION }
     });
 
     writeStream.on('close', () => {
