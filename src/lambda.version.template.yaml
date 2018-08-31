@@ -22,6 +22,6 @@ Resources:
 
 Outputs:
   LambdaArn:
-    Value: !Ref LambdaAlias
+    Value: !Ref LambdaVersion
     Export:
       Name: '@{FunctionName}-@{Version}'
