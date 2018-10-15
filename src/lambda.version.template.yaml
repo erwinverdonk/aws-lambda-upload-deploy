@@ -14,12 +14,6 @@ Resources:
       FunctionVersion: !GetAtt LambdaVersion.Version
       Name: @{Version}
 
-  LambdaLogsGroup:
-    Type: 'AWS::Logs::LogGroup'
-    Properties:
-      LogGroupName: '/aws/lambda/@{FunctionName}-@{Version}'
-      RetentionInDays: 30
-
 Outputs:
   LambdaArn:
     Value: !Ref LambdaVersion

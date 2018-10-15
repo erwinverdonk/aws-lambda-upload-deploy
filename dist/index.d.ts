@@ -29,7 +29,9 @@ export declare type UploadDeployOptions = {
     };
 };
 export declare const AwsLambdaUploadDeploy: ($options: UploadDeployOptions) => {
-    start: () => Promise<void | {
+    start: ({ assumeYes }: {
+        assumeYes: boolean;
+    }) => Promise<void | {
         functionName: string;
         bucketName: string;
         cloudformation: {

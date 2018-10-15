@@ -88,7 +88,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
   // Version may only contain alphabetical character, colon and hyphen.
   options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
 
-  const start = () => {
+  const start = ({ assumeYes }: { assumeYes:boolean }) => {
     const zipFileName = `${options.functionName}-${options.version}-${new Date().getTime()}.zip`;
     options.s3.key = `${options.s3.bucketPath}${zipFileName}`;
 
@@ -127,7 +127,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
       const lambdaBaseResult = await AwsCloudFormationDeploy({
         stackName: `Lambda-${options.functionName}`,
         templateBody: generateCloudFormationTemplate(options, false)
-      }).start();
+      }).start({ assumeYes });
 
       // Store the outputs of the Lambda base for later return.
       outputs.splice.apply(outputs, [0, 0].concat(
@@ -156,7 +156,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
                 functionName: options.functionName
               })
             )
-          }).start()).outputs as any
+          }).start({ assumeYes })).outputs as any
         ));
       }
 
