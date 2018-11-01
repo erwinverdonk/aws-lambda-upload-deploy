@@ -30,6 +30,9 @@ export type UploadDeployOptions = {
       action: string[],
       resource: string[]
     }[],
+    tracingConfig?: {
+      mode?: AWS.Lambda.TracingMode
+    },
     vpcConfig?: {
       subnetIds?: AWS.Lambda.SubnetIds;
       securityGroupIds?: AWS.Lambda.SecurityGroupIds;
@@ -51,6 +54,9 @@ const getDefaultOptions = (functionName:string) => ({
     servicesAllowed: [
       'lambda.amazonaws.com'
     ],
+    tracingConfig: {
+      mode: 'PassThrough'
+    },
     permissions: [
       {
         effect: 'Allow',

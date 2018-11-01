@@ -13,6 +13,9 @@ Resources:
       Role: !GetAtt LambdaExecRole.Arn
       Runtime: @{Runtime}
       Timeout: @{Timeout}
+      TracingConfig: {
+        Mode: @{TracingMode}
+      }
       VpcConfig: @{VpcConfig}
       Environment: 
         Variables: @{Environment}

@@ -28,6 +28,9 @@ const getDefaultOptions = (functionName) => ({
         servicesAllowed: [
             'lambda.amazonaws.com'
         ],
+        tracingConfig: {
+            mode: 'PassThrough'
+        },
         permissions: [
             {
                 effect: 'Allow',
@@ -54,7 +57,7 @@ const oraPromise = (message, promise) => {
 exports.AwsLambdaUploadDeploy = ($options) => {
     const options = deepmerge(getDefaultOptions($options.functionName), $options, { arrayMerge: (dest, src, opt) => src });
     options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
-    const start = ({ assumeYes }) => {
+    const start = ({ assumeYes } = {}) => {
         const zipFileName = `${options.functionName}-${options.version}-${new Date().getTime()}.zip`;
         options.s3.key = `${options.s3.bucketPath}${zipFileName}`;
         return oraPromise('Creating Lambda package...', lib_1.createZip({

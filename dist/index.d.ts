@@ -21,6 +21,9 @@ export declare type UploadDeployOptions = {
             action: string[];
             resource: string[];
         }[];
+        tracingConfig?: {
+            mode?: AWS.Lambda.TracingMode;
+        };
         vpcConfig?: {
             subnetIds?: AWS.Lambda.SubnetIds;
             securityGroupIds?: AWS.Lambda.SecurityGroupIds;
@@ -29,8 +32,8 @@ export declare type UploadDeployOptions = {
     };
 };
 export declare const AwsLambdaUploadDeploy: ($options: UploadDeployOptions) => {
-    start: ({ assumeYes }: {
-        assumeYes: boolean;
+    start: ({ assumeYes }?: {
+        assumeYes?: boolean;
     }) => Promise<void | {
         functionName: string;
         bucketName: string;

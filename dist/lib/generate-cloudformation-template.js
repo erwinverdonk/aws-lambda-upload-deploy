@@ -19,6 +19,7 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
         : '!Ref AWS::NoValue')
         .replace(/@{Environment}/g, JSON.stringify(options.settings.environment))
         .replace(/@{Version}/g, options.version)
+        .replace(/@{TracingMode}/g, options.settings.tracingConfig.mode)
         .replace(/@{RoleStatement}/g, JSON.stringify([{
             Effect: 'Allow',
             Principal: {
