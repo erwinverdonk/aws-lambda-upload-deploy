@@ -88,7 +88,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
   // Version may only contain alphabetical character, colon and hyphen.
   options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
 
-  const start = ({ assumeYes }: { assumeYes:boolean }) => {
+  const start = ({ assumeYes }: { assumeYes?:boolean } = {}) => {
     const zipFileName = `${options.functionName}-${options.version}-${new Date().getTime()}.zip`;
     options.s3.key = `${options.s3.bucketPath}${zipFileName}`;
 
