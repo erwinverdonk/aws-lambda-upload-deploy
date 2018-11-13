@@ -1,6 +1,4 @@
-import * as AWS from 'aws-sdk';
 import * as fs from 'fs';
-import * as yaml from 'js-yaml';
 import { UploadDeployOptions } from './../';
 
 export const generateCloudFormationTemplate = (options: UploadDeployOptions, lambdaExists: boolean) => {

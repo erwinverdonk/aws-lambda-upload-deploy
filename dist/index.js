@@ -57,7 +57,7 @@ const oraPromise = (message, promise) => {
 exports.AwsLambdaUploadDeploy = ($options) => {
     const options = deepmerge(getDefaultOptions($options.functionName), $options, { arrayMerge: (dest, src, opt) => src });
     options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
-    const start = ({ assumeYes } = {}) => {
+    const start = ({ assumeYes, noVersioning } = {}) => {
         const zipFileName = `${options.functionName}-${options.version}-${new Date().getTime()}.zip`;
         options.s3.key = `${options.s3.bucketPath}${zipFileName}`;
         return oraPromise('Creating Lambda package...', lib_1.createZip({
@@ -92,7 +92,7 @@ exports.AwsLambdaUploadDeploy = ($options) => {
                     s3Key: `${options.s3.bucketPath}${uploadResult.fileKey}`
                 });
             }
-            if (lambdaExists || lambdaBaseResult.succeed) {
+            if (!noVersioning && (lambdaExists || lambdaBaseResult.succeed)) {
                 outputs.splice.apply(outputs, [0, 0].concat((yield aws_cloudformation_deploy_1.AwsCloudFormationDeploy({
                     stackName: `Lambda-${options.functionName}-${options.version}`,
                     templateBody: lib_1.generateCloudFormationTemplate(options, yield lib_1.checkLambdaExists({

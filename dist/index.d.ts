@@ -32,8 +32,9 @@ export declare type UploadDeployOptions = {
     };
 };
 export declare const AwsLambdaUploadDeploy: ($options: UploadDeployOptions) => {
-    start: ({ assumeYes }?: {
+    start: ({ assumeYes, noVersioning }?: {
         assumeYes?: boolean;
+        noVersioning?: boolean;
     }) => Promise<void | {
         functionName: string;
         bucketName: string;

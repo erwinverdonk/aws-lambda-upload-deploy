@@ -94,7 +94,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
   // Version may only contain alphabetical character, colon and hyphen.
   options.version = options.version.replace(/[^a-z0-9:-]/ig, '-');
 
-  const start = ({ assumeYes }: { assumeYes?:boolean } = {}) => {
+  const start = ({ assumeYes, noVersioning }: { assumeYes?:boolean, noVersioning?:boolean } = {}) => {
     const zipFileName = `${options.functionName}-${options.version}-${new Date().getTime()}.zip`;
     options.s3.key = `${options.s3.bucketPath}${zipFileName}`;
 
@@ -152,7 +152,7 @@ export const AwsLambdaUploadDeploy = ($options: UploadDeployOptions) => {
 
       // When Lambda base already existed or is deployed successfully we can 
       // continue deploy the version.
-      if(lambdaExists || lambdaBaseResult.succeed){
+      if(!noVersioning && (lambdaExists || lambdaBaseResult.succeed)){
         outputs.splice.apply(outputs, [0, 0].concat(
           (await AwsCloudFormationDeploy({
             stackName: `Lambda-${options.functionName}-${options.version}`,
