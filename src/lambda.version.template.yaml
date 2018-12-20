@@ -19,3 +19,11 @@ Outputs:
     Value: !Ref LambdaVersion
     Export:
       Name: '@{FunctionName}-@{Version}'
+  LambdaVersionArn:
+    Value: !Ref LambdaVersion
+    Export:
+      Name: '@{FunctionName}-@{Version}:Version'
+  LambdaAliasArn:
+    Value: !Ref LambdaAlias
+    Export:
+      Name: '@{FunctionName}-@{Version}:Alias'
