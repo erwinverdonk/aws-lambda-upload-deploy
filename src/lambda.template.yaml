@@ -12,6 +12,7 @@ Resources:
       Handler: 'index.@{HandlerName}'
       Role: !GetAtt LambdaExecRole.Arn
       Runtime: @{Runtime}
+      ReservedConcurrentExecutions: @{ReservedConcurrentExecutions}
       Timeout: @{Timeout}
       TracingConfig: {
         Mode: @{TracingMode}

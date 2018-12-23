@@ -11,6 +11,7 @@ export declare type UploadDeployOptions = {
     };
     settings?: {
         runtime?: AWS.Lambda.Runtime;
+        reservedConcurrentExecutions?: AWS.Lambda.ReservedConcurrentExecutions;
         memory?: AWS.Lambda.MemorySize;
         timeout?: AWS.Lambda.Timeout;
         environment?: AWS.Lambda.EnvironmentVariables;
