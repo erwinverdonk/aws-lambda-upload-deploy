@@ -16,7 +16,7 @@ export const generateCloudFormationTemplate = (options: UploadDeployOptions, lam
     .replace(/@{HandlerName}/g, options.handlerName)
     .replace(/@{Runtime}/g, options.settings.runtime)
     .replace(/@{ReservedConcurrentExecutions}/g, (
-      !Number.isNaN(Number.parseInt(options.settings.reservedConcurrentExecutions.toString())) 
+      !Number.isNaN(Number.parseInt(options.settings.reservedConcurrentExecutions as any)) 
       ? options.settings.reservedConcurrentExecutions 
       : '!Ref AWS::NoValue'
     ).toString())
