@@ -9,7 +9,9 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
         .replace(/@{FunctionName}/g, options.functionName)
         .replace(/@{HandlerName}/g, options.handlerName)
         .replace(/@{Runtime}/g, options.settings.runtime)
-        .replace(/@{ReservedConcurrentExecutions}/g, (options.settings.reservedConcurrentExecutions || '!Ref AWS::NoValue').toString())
+        .replace(/@{ReservedConcurrentExecutions}/g, (!Number.isNaN(Number.parseInt(options.settings.reservedConcurrentExecutions.toString()))
+        ? options.settings.reservedConcurrentExecutions
+        : '!Ref AWS::NoValue').toString())
         .replace(/@{Timeout}/g, options.settings.timeout.toString())
         .replace(/@{VpcConfig}/g, options.settings.vpcConfig
         ? JSON.stringify(Object.keys(options.settings.vpcConfig)
