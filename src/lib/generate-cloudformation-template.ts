@@ -18,7 +18,7 @@ export const generateCloudFormationTemplate = (
     .replace(/@{FunctionName}/g, options.functionName)
     .replace(/@{HandlerName}/g, options.handlerName)
     .replace(/@{Runtime}/g, options.settings.runtime)
-    .replace(/@{MemorySize}/g, options.settings.memory)
+    .replace(/@{MemorySize}/g, options.settings.memory.toString())
     .replace(
       /@{ReservedConcurrentExecutions}/g,
       (!Number.isNaN(

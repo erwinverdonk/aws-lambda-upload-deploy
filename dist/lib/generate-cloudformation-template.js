@@ -9,40 +9,44 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
         .replace(/@{FunctionName}/g, options.functionName)
         .replace(/@{HandlerName}/g, options.handlerName)
         .replace(/@{Runtime}/g, options.settings.runtime)
+        .replace(/@{MemorySize}/g, options.settings.memory.toString())
         .replace(/@{ReservedConcurrentExecutions}/g, (!Number.isNaN(Number.parseInt(options.settings.reservedConcurrentExecutions))
         ? options.settings.reservedConcurrentExecutions
         : '!Ref AWS::NoValue').toString())
         .replace(/@{Timeout}/g, options.settings.timeout.toString())
         .replace(/@{VpcConfig}/g, options.settings.vpcConfig
-        ? JSON.stringify(Object.keys(options.settings.vpcConfig)
-            .reduce((acc, key) => {
-            acc[key.replace(/^\w/, _ => _.toUpperCase())] = (options.settings.vpcConfig[key]);
+        ? JSON.stringify(Object.keys(options.settings.vpcConfig).reduce((acc, key) => {
+            acc[key.replace(/^\w/, _ => _.toUpperCase())] = options
+                .settings.vpcConfig[key];
             return acc;
         }, {}))
         : '!Ref AWS::NoValue')
         .replace(/@{Environment}/g, JSON.stringify(options.settings.environment))
         .replace(/@{Version}/g, options.version)
         .replace(/@{TracingMode}/g, options.settings.tracingConfig.mode)
-        .replace(/@{RoleStatement}/g, JSON.stringify([{
+        .replace(/@{RoleStatement}/g, JSON.stringify([
+        {
             Effect: 'Allow',
             Principal: {
                 Service: options.settings.servicesAllowed
             },
             Action: ['sts:AssumeRole']
-        }]))
+        }
+    ]))
         .replace(/@{ManagedPolicies}/g, options.settings.managedPolicies
         ? `ManagedPolicyArns: ${JSON.stringify(options.settings.managedPolicies)}`
         : '')
-        .replace(/@{PolicyStatement}/g, JSON.stringify(options.settings.permissions.concat([{
+        .replace(/@{PolicyStatement}/g, JSON.stringify(options.settings.permissions
+        .concat([
+        {
             effect: 'Allow',
-            action: [
-                'lambda:InvokeFunction'
-            ],
+            action: ['lambda:InvokeFunction'],
             resource: [
                 `arn:aws:lambda:*:*:function:${options.functionName}`,
                 `arn:aws:lambda:*:*:function:${options.functionName}:*`
             ]
-        }, {
+        },
+        {
             effect: 'Allow',
             action: [
                 'logs:CreateLogGroup',
@@ -50,8 +54,9 @@ exports.generateCloudFormationTemplate = (options, lambdaExists) => {
                 'logs:PutLogEvents'
             ],
             resource: ['*']
-        }]).map((_) => Object.keys(_)
-        .reduce((acc, key) => {
+        }
+    ])
+        .map((_) => Object.keys(_).reduce((acc, key) => {
         acc[key.replace(/^\w/, _ => _.toUpperCase())] = _[key];
         return acc;
     }, {}))));
